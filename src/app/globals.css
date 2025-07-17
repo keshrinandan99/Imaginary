@@ -1,5 +1,6 @@
-@import "tailwindcss";
 
+
+@import "tailwindcss";
 
 @layer base {
   :root {
@@ -63,19 +64,9 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
   }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
 
 .auth {
-  @apply flex-center min-h-screen w-full bg-purple-100 items-center
+  @apply flex justify-center items-center min-h-screen w-full bg-purple-100
 }
 
 .root {
@@ -86,7 +77,16 @@
   @apply mt-16 flex-1 overflow-auto py-8 lg:mt-0 lg:max-h-screen lg:py-10
 }
 
-/* ========================================== TAILWIND STYLES */
+}
+/* @layer base {
+  * {
+    @apply border-border;
+  } */
+  /* body {
+    @apply bg-background text-foreground;
+  }
+} */
+
 @layer utilities {
   /* ===== UTILITIES */
   .wrapper {
@@ -373,3 +373,6 @@
   font-weight: 600;
   color: #384262;
 }
+
+
+
