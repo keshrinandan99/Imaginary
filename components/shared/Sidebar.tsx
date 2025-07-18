@@ -2,9 +2,10 @@
 import Link from 'next/link'
 import React from 'react'
 import Image from 'next/image'
-import { SignIn } from '@clerk/nextjs'
-import { navLinks } from '../../../constants'
+import { SignedIn, SignedOut, SignIn, UserButton } from '@clerk/nextjs'
+import { navLinks } from '../../constants'
 import { usePathname } from 'next/navigation'
+import {Button} from '../ui/button'
 
 function Sidebar() {
   const pathname = usePathname() // Fixed: Added parentheses to call the hook
@@ -17,7 +18,7 @@ function Sidebar() {
         </Link>
 
         <nav className='h-full flex-col justify-between md:flex md:gap-4'>
- 
+    <SignedIn>
             <ul className='hidden w-full flex-col items-start gap-2 md:flex'>
               {navLinks.map((link) => {
                 const isActive = link.route === pathname
@@ -29,13 +30,38 @@ function Sidebar() {
                       isActive ? 'bg-purple-gradient text-white' : 'text-gray-700'
                     }`}
                   >
-                    <Link href={link.route}>
+                  <Link className='p-16-semibold flex size-full gap-4 p-4' href={link.route}>
+                  <Image 
+                  src={link.icon}
+                  alt="logo"
+                  width={24}
+                  height={24}
+                  className={`${isActive && 'brightness-200'}`}
+                  />
+                  
+                  
+                  
+                    
                       {link.label}
                     </Link>
                   </li>
                 )
               })}
+
+              <li className='flex justify-center items-center cursor-pointer gap-2 p-4 bg-purple-gradient text-white'>
+                <UserButton  fallback='/' showName/>
+              </li>
             </ul>
+            </SignedIn>
+
+            <SignedOut>
+              <Button asChild className="bgcover bg-purple-700 py-4 px-6 ;">
+              <Link href={"/sign-in"}>LogIn </Link>
+              </Button>
+              
+            </SignedOut>
+
+
       
         </nav>
       </div>
