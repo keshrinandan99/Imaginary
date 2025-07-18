@@ -10,22 +10,22 @@ function Sidebar() {
   const pathname = usePathname() // Fixed: Added parentheses to call the hook
   
   return (
-    <aside className='sidebar'>
+    <aside className='hidden h-screen w-72 bg-white p-5 shadow-md shadow-purple-200/50 lg:flex'>
       <div className='flex size-full flex-col gap-4'>
-        <Link href="/" className='sidebar-logo'>
+        <Link href="/" className=' flex items-center gap-2 md:py-2'>
           <Image src="/assets/images/logo-text.svg" alt="Imaginary Logo" width={150} height={50} />
         </Link>
 
-        <nav className='sidebar-nav'>
-          <SignIn>
-            <ul className='side-nav_elements'>
+        <nav className='h-full flex-col justify-between md:flex md:gap-4'>
+ 
+            <ul className='hidden w-full flex-col items-start gap-2 md:flex'>
               {navLinks.map((link) => {
                 const isActive = link.route === pathname
 
                 return (
                   <li 
                     key={link.route} 
-                    className={`side-nav_element group ${
+                    className={` flex justify-center items-center p-16-semibold w-full whitespace-nowrap rounded-full bg-cover transition-all hover:bg-purple-100 hover:shadow-inner ${
                       isActive ? 'bg-purple-gradient text-white' : 'text-gray-700'
                     }`}
                   >
@@ -36,7 +36,7 @@ function Sidebar() {
                 )
               })}
             </ul>
-          </SignIn>
+      
         </nav>
       </div>
     </aside>
