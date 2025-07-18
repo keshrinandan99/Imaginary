@@ -1,5 +1,12 @@
 /* eslint-disable no-unused-vars */
 
+declare global {
+  var mongoose: {
+    conn: Mongoose | null;
+    promise: Promise<Mongoose> | null;
+  } | undefined;
+}
+
 // ====== USER PARAMS
 declare type CreateUserParams = {
   clerkId: string;
