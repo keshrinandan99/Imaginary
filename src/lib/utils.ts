@@ -6,6 +6,24 @@ import { twMerge } from "tailwind-merge";
 
 import { aspectRatioOptions } from "../../constants";
 
+// Define proper types for your interfaces
+interface FormUrlQueryParams {
+  searchParams: URLSearchParams;
+  key: string;
+  value: string;
+}
+
+interface RemoveUrlQueryParams {
+  searchParams: URLSearchParams;
+  keysToRemove: string[];
+}
+
+interface ImageDimensions {
+  width?: number;
+  height?: number;
+  aspectRatio?: AspectRatioKey;
+}
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -50,7 +68,6 @@ const toBase64 = (str: string) =>
 export const dataUrl = `data:image/svg+xml;base64,${toBase64(
   shimmer(1000, 1000)
 )}`;
-// ==== End
 
 // FORM URL QUERY
 export const formUrlQuery = ({
@@ -84,20 +101,23 @@ export function removeKeysFromQuery({
   return `${window.location.pathname}?${qs.stringify(currentUrl)}`;
 }
 
-// DEBOUNCE
-export const debounce = (func: (...args: any[]) => void, delay: number) => {
-  let timeoutId: NodeJS.Timeout | null;
-  return (...args: any[]) => {
+// DEBOUNCE - Fixed any types
+export const debounce = <T extends unknown[]>(
+  func: (...args: T) => void,
+  delay: number
+) => {
+  let timeoutId: NodeJS.Timeout | null = null;
+  return (...args: T) => {
     if (timeoutId) clearTimeout(timeoutId);
     timeoutId = setTimeout(() => func.apply(null, args), delay);
   };
 };
 
-// GE IMAGE SIZE
+// GET IMAGE SIZE - Fixed any type
 export type AspectRatioKey = keyof typeof aspectRatioOptions;
 export const getImageSize = (
   type: string,
-  image: any,
+  image: ImageDimensions,
   dimension: "width" | "height"
 ): number => {
   if (type === "fill") {
@@ -130,9 +150,12 @@ export const download = (url: string, filename: string) => {
     .catch((error) => console.log({ error }));
 };
 
-// DEEP MERGE OBJECTS
-export const deepMergeObjects = (obj1: any, obj2: any) => {
-  if(obj2 === null || obj2 === undefined) {
+// DEEP MERGE OBJECTS - Fixed any types
+export const deepMergeObjects = <T extends Record<string, unknown>>(
+  obj1: T,
+  obj2: T | null | undefined
+): T => {
+  if (obj2 === null || obj2 === undefined) {
     return obj1;
   }
 
@@ -146,7 +169,10 @@ export const deepMergeObjects = (obj1: any, obj2: any) => {
         obj2[key] &&
         typeof obj2[key] === "object"
       ) {
-        output[key] = deepMergeObjects(obj1[key], obj2[key]);
+        output[key] = deepMergeObjects(
+          obj1[key] as Record<string, unknown>,
+          obj2[key] as Record<string, unknown>
+        ) as T[Extract<keyof T, string>];
       } else {
         output[key] = obj1[key];
       }
