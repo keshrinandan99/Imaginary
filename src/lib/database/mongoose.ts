@@ -12,7 +12,7 @@ declare global {
     var mongoose: MongooseConnection | undefined;
 }
 
-let cached: MongooseConnection = globalThis.mongoose || { conn: null, promise: null };
+const cached: MongooseConnection = globalThis.mongoose || { conn: null, promise: null };
 
 if (!globalThis.mongoose) {
     globalThis.mongoose = cached;
