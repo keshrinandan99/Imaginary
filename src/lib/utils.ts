@@ -101,19 +101,19 @@ export function removeKeysFromQuery({
   return `${window.location.pathname}?${qs.stringify(currentUrl)}`;
 }
 
-// DEBOUNCE - Fixed any types
+// DEBOUNCE - Properly typed
 export const debounce = <T extends unknown[]>(
   func: (...args: T) => void,
   delay: number
 ) => {
-  let timeoutId: NodeJS.Timeout | null = null;
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
   return (...args: T) => {
     if (timeoutId) clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => func.apply(null, args), delay);
+    timeoutId = setTimeout(() => func(...args), delay);
   };
 };
 
-// GET IMAGE SIZE - Fixed any type
+// GET IMAGE SIZE - Properly typed
 export type AspectRatioKey = keyof typeof aspectRatioOptions;
 export const getImageSize = (
   type: string,
@@ -150,7 +150,7 @@ export const download = (url: string, filename: string) => {
     .catch((error) => console.log({ error }));
 };
 
-// DEEP MERGE OBJECTS - Fixed any types
+// DEEP MERGE OBJECTS - Properly typed
 export const deepMergeObjects = <T extends Record<string, unknown>>(
   obj1: T,
   obj2: T | null | undefined
