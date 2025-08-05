@@ -5,6 +5,7 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Button } from "@/components/ui/button"
+import {defaultValues} from "../../constants"
 import {
   Form,
   FormControl,
@@ -16,14 +17,25 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 const formSchema = z.object({
-  username: z.string().min(2).max(50),
+  title:z.string(),
+  aspectRatio:z.string().optional(),
+  color:z.string().optional(),
+  prompt:z.string().optional(),
+  publicId:z.string()
+  
 })
-function TransformationForm() {
+function TransformationForm({action,data = null}:TransformationFormProps) {
+const initialValues=data && action==='Update'?{
+  title: data?.title,
+  aspectRatio: data?.aspectRatio,
+  color: data?.color,
+  prompt: data?.prompt,
+  publicId: data?.publicId,
+}:defaultValues
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      username: "",
-    },
+    defaultValues:initialValues
   })
  
   // 2. Define a submit handler.
